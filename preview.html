@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerra - Fintech App Preview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1E3A5F 0%, #2E5A8F 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { 
+            color: #fff; 
+            text-align: center; 
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        .subtitle { 
+            color: #00C9A7; 
+            text-align: center; 
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+        }
+        .phone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            justify-items: center;
+        }
+        .phone {
+            width: 280px;
+            height: 580px;
+            background: #fff;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        .phone-header {
+            height: 30px;
+            background: #1E3A5F;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .notch {
+            width: 80px;
+            height: 20px;
+            background: #1A1A1A;
+            border-radius: 10px;
+        }
+        .screen {
+            height: calc(100% - 30px);
+            overflow: hidden;
+            position: relative;
+        }
+        /* Login Screen */
+        .login-screen {
+            padding: 30px 20px;
+            background: #F8FAFC;
+            height: 100%;
+        }
+        .logo { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: #1E3A5F; 
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .subtitle-small {
+            text-align: center;
+            color: #6B7280;
+            margin-bottom: 30px;
+        }
+        .input-field {
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #1A1A1A;
+        }
+        .input-field::placeholder { color: #9CA3AF; }
+        .btn-primary {
+            background: #1E3A5F;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+        }
+        .social-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .social-btn {
+            flex: 1;
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: #1A1A1A;
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .footer-text span { color: #1E3A5F; font-weight: 600; }
+        
+        /* Home Screen */
+        .home-header {
+            background: #1E3A5F;
+            padding: 20px;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+        .home-greeting { color: #fff; font-size: 18px; font-weight: 600; }
+        .home-status { color: #00C9A7; font-size: 12px; margin-top: 3px; }
+        .home-settings { color: #fff; font-size: 20px; }
+        .balance-card {
+            background: #1E3A5F;
+            margin: -30px 20px 20px;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+        }
+        .balance-label { color: rgba(255,255,255,0.7); font-size: 12px; }
+        .balance-amount { color: #fff; font-size: 32px; font-weight: 700; margin: 5px 0; }
+        .quick-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .action-item { text-align: center; }
+        .action-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(30,58,95,0.1);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+            color: #1E3A5F;
+            font-size: 20px;
+        }
+        .action-label { font-size: 11px; color: #6B7280; }
+        .section { padding: 0 20px; margin-bottom: 20px; }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .see-all { color: #1E3A5F; font-size: 13px; }
+        .tx-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .tx-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+        .tx-icon.credit { background: rgba(67,160,71,0.2); color: #43A047; }
+        .tx-icon.debit { background: rgba(229,57,53,0.2); color: #E53935; }
+        .tx-details { flex: 1; }
+        .tx-desc { font-size: 14px; color: #1A1A1A; font-weight: 500; }
+        .tx-date { font-size: 11px; color: #9CA3AF; }
+        .tx-amount { font-size: 14px; font-weight: 600; }
+        .tx-amount.credit { color: #43A047; }
+        .tx-amount.debit { color: #E53935; }
+
+        /* Wallet Screen */
+        .wallet-title {
+            padding: 20px 20px 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1A1A1A;
+        }
+        .wallet-card {
+            margin: 10px 20px 20px;
+            padding: 25px;
+            border-radius: 20px;
+        }
+        .wallet-card-bg {
+            background: linear-gradient(135deg, #1E3A5F 0%, #2E5A8F 100%);
+        }
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .card-action {
+            flex: 1;
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #1E3A5F;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .section-header {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1A1A1A;
+            padding: 0 20px;
+            margin-bottom: 10px;
+        }
+        .virtual-account {
+            margin: 0 20px 20px;
+            background: #fff;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 15px;
+        }
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #F3F4F6;
+        }
+        .account-label { color: #6B7280; font-size: 13px; }
+        .account-value { color: #1A1A1A; font-size: 13px; font-weight: 500; }
+
+        /* Onboarding Screen */
+        .onboard-content {
+            padding: 40px 20px;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .onboard-icon {
+            width: 100px;
+            height: 100px;
+            background: rgba(30,58,95,0.1);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
+        .onboard-title { font-size: 24px; font-weight: 700; color: #1A1A1A; margin-bottom: 15px; }
+        .onboard-desc { font-size: 15px; color: #6B7280; line-height: 1.6; }
+        .dots { display: flex; justify-content: center; gap: 8px; margin: 30px 0; }
+        .dot { width: 8px; height: 8px; border-radius: 4px; background: #E5E7EB; }
+        .dot.active { background: #1E3A5F; width: 24px; }
+        .skip-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #6B7280;
+            font-size: 14px;
+        }
+        .get-started-btn {
+            background: #1E3A5F;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        /* Card Screen */
+        .cards-title { font-size: 20px; font-weight: 700; color: #1A1A1A; padding: 20px 20px 10px; }
+        .card-item {
+            margin: 10px 20px;
+            background: linear-gradient(135deg, #1E3A5F 0%, #2E5A8F 100%);
+            border-radius: 20px;
+            padding: 25px;
+            color: #fff;
+        }
+        .card-type { font-size: 16px; font-weight: 600; margin-bottom: 20px; }
+        .card-number { font-size: 18px; letter-spacing: 3px; margin-bottom: 20px; }
+        .card-info { display: flex; justify-content: space-between; }
+        .card-label { font-size: 10px; color: rgba(255,255,255,0.7); }
+        .card-value { font-size: 14px; font-weight: 500; margin-top: 3px; }
+        .card-actions-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .card-action-link { display: flex; align-items: center; gap: 5px; }
+
+        .label { display: block; font-size: 12px; font-weight: 600; color: #1A1A1A; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nerra</h1>
+        <p class="subtitle">Your All-in-One Financial Companion</p>
+        
+        <div class="phone-grid">
+            <!-- Login Screen -->
+            <div class="phone">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen login-screen">
+                    <div class="logo">Nerra</div>
+                    <div class="subtitle-small">Welcome back</div>
+                    
+                    <label class="label">Email</label>
+                    <input type="text" class="input-field" placeholder="Enter your email">
+                    
+                    <label class="label">Password</label>
+                    <input type="password" class="input-field" placeholder="Enter your password">
+                    
+                    <button class="btn-primary">Sign In</button>
+                    
+                    <div style="text-align: center; margin: 15px 0; color: #9CA3AF; font-size: 12px;">or continue with</div>
+                    
+                    <div class="social-btns">
+                        <div class="social-btn">G Google</div>
+                        <div class="social-btn">🍎 Apple</div>
+                    </div>
+                    
+                    <div class="footer-text">
+                        Don't have an account? <span>Sign Up</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Onboarding Screen -->
+            <div class="phone">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen" style="background: #F8FAFC; position: relative;">
+                    <div class="skip-btn">Skip</div>
+                    <div class="onboard-content">
+                        <div class="onboard-icon">💰</div>
+                        <div class="onboard-title">Welcome to Nerra</div>
+                        <div class="onboard-desc">Your all-in-one financial companion. Send money, pay bills, and manage your finances with ease.</div>
+                        <div class="dots">
+                            <div class="dot active"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                        <button class="get-started-btn">Get Started</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home Screen -->
+            <div class="phone">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen" style="background: #F8FAFC; overflow-y: auto;">
+                    <div class="home-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="home-greeting">Hello, User 👋</div>
+                                <div class="home-status">Account Active</div>
+                            </div>
+                            <div class="home-settings">⚙️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="balance-card">
+                        <div class="balance-label">Available Balance</div>
+                        <div class="balance-amount">₦125,000</div>
+                        <div style="color: #00C9A7; font-size: 11px;">✓ insured</div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="action-item"><div class="action-icon">➕</div><div class="action-label">Fund Wallet</div></div>
+                        <div class="action-item"><div class="action-icon">⇄</div><div class="action-label">Transfer</div></div>
+                        <div class="action-item"><div class="action-icon">📞</div><div class="action-label">Airtime</div></div>
+                        <div class="action-item"><div class="action-icon">📄</div><div class="action-label">Bills</div></div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            Recent Transactions
+                            <span class="see-all">See All</span>
+                        </div>
+                        <div class="tx-item">
+                            <div class="tx-icon credit">↓</div>
+                            <div class="tx-details">
+                                <div class="tx-desc">From John Doe</div>
+                                <div class="tx-date">Today</div>
+                            </div>
+                            <div class="tx-amount credit">+₦5,000</div>
+                        </div>
+                        <div class="tx-item">
+                            <div class="tx-icon debit">↑</div>
+                            <div class="tx-details">
+                                <div class="tx-desc">MTN Airtime</div>
+                                <div class="tx-date">Yesterday</div>
+                            </div>
+                            <div class="tx-amount debit">-₦2,000</div>
+                        </div>
+                        <div class="tx-item">
+                            <div class="tx-icon debit">↑</div>
+                            <div class="tx-details">
+                                <div class="tx-desc">To Sarah</div>
+                                <div class="tx-date">Mar 20</div>
+                            </div>
+                            <div class="tx-amount debit">-₦15,000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wallet Screen -->
+            <div class="phone">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen" style="background: #F8FAFC; overflow-y: auto;">
+                    <div class="wallet-title">My Wallet</div>
+                    
+                    <div class="wallet-card wallet-card-bg">
+                        <div class="balance-label">Available Balance</div>
+                        <div class="balance-amount">₦125,000</div>
+                        <div class="card-actions">
+                            <div class="card-action">➕ Add Money</div>
+                            <div class="card-action">➜ Transfer</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-header">Fund with Virtual Account</div>
+                    <div class="virtual-account">
+                        <div class="account-row">
+                            <span class="account-label">Bank</span>
+                            <span class="account-value">Guaranty Trust Bank</span>
+                        </div>
+                        <div class="account-row">
+                            <span class="account-label">Account Name</span>
+                            <span class="account-value">Nerra Prepaid</span>
+                        </div>
+                        <div class="account-row">
+                            <span class="account-label">Account Number</span>
+                            <span class="account-value" style="color: #1E3A5F; font-weight: 700;">1234567890</span>
+                        </div>
+                    </div>
+                    
+                    <div class="section-header">Quick Actions</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px;">
+                        <div style="background: #fff; padding: 15px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 5px;">📱</div>
+                            <div style="font-size: 12px; color: #6B7280;">QR Code</div>
+                        </div>
+                        <div style="background: #fff; padding: 15px; border-radius: 12px; text-align: center;">
+                            <div style="font-size: 24px; margin-bottom: 5px;">👥</div>
+                            <div style="font-size: 12px; color: #6B7280;">Beneficiaries</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Virtual Card Screen -->
+            <div class="phone">
+                <div class="phone-header">
+                    <div class="notch"></div>
+                </div>
+                <div class="screen" style="background: #F8FAFC; overflow-y: auto;">
+                    <div class="cards-title">Virtual Cards</div>
+                    
+                    <div class="card-item">
+                        <div class="card-type">Nerra Virtual</div>
+                        <div style="background: #43A047; padding: 3px 8px; border-radius: 4px; font-size: 10px; display: inline-block; margin-bottom: 15px;">Active</div>
+                        <div class="card-number">•••• •••• •••• 4532</div>
+                        <div class="card-info">
+                            <div>
+                                <div class="card-label">Balance</div>
+                                <div class="card-value">₦25,000</div>
+                            </div>
+                            <div>
+                                <div class="card-label">Expires</div>
+                                <div class="card-value">12/26</div>
+                            </div>
+                        </div>
+                        <div class="card-actions-row">
+                            <div class="card-action-link">⏸ Freeze</div>
+                            <div class="card-action-link">💰 Fund</div>
+                        </div>
+                    </div>
+                    
+                    <div style="padding: 20px;">
+                        <button style="background: transparent; border: 1px solid #1E3A5F; color: #1E3A5F; padding: 14px; border-radius: 12px; width: 100%; font-weight: 600;">Create New Card</button>
+                        <p style="text-align: center; color: #9CA3AF; font-size: 12px; margin-top: 10px;">Maximum 3 cards • Free to create</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
