@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerra - 6 Dark Themes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0F0F11; min-height: 100vh; padding: 20px; }
+        h1 { color: #fff; text-align: center; margin-bottom: 10px; }
+        h2 { color: #8B5CF6; text-align: center; margin-bottom: 40px; }
+        .phone-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; justify-items: center; }
+        .phone { width: 260px; height: 520px; border-radius: 35px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .header { height: 28px; display: flex; justify-content: center; align-items: center; }
+        .notch { width: 70px; height: 18px; background: #1A1A1A; border-radius: 8px; }
+        .screen { height: calc(100% - 28px); overflow: hidden; }
+        
+        .neon-noir .header { background: #8B5CF6; }
+        .neon-noir .screen { background: #0F0F11; }
+        .cyber-tech .header { background: #9668F5; }
+        .cyber-tech .screen { background: #040307; }
+        .ember-glow .header { background: #F15A24; }
+        .ember-glow .screen { background: #000000; }
+        .warm-sunset .header { background: #D95D26; }
+        .warm-sunset .screen { background: #000000; }
+        .cosmic-purple .header { background: #5D5FEF; }
+        .cosmic-purple .screen { background: #050505; }
+        .toxic-forest .header { background: #1DB954; }
+        .toxic-forest .screen { background: #0A0B0A; }
+        
+        .content { padding: 25px 18px; }
+        .logo { font-size: 1.8rem; font-weight: 700; text-align: center; }
+        .sub { text-align: center; margin-bottom: 25px; font-size: 14px; }
+        .input { background: #1C1C1E; border: 1px solid #2C2C2E; border-radius: 10px; padding: 12px; margin-bottom: 12px; font-size: 13px; color: #fff; width: 100%; }
+        .btn { background: #8B5CF6; color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 14px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Nerra 🎨</h1>
+    <h2>6 Dark Themes Preview</h2>
+    
+    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; text-align: center;">
+        <div>
+            <h3 style="color:#8B5CF6">Neon Noir</h3>
+            <div class="phone neon-noir">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#8B5CF6">Nerra</div>
+                        <div class="sub" style="color:#8E8E93">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:#9668F5">Cyber Tech</h3>
+            <div class="phone cyber-tech">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#9668F5">Nerra</div>
+                        <div class="sub" style="color:#5740A0">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn" style="background:#9668F5">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:#F15A24">Ember Glow</h3>
+            <div class="phone ember-glow">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#F15A24">Nerra</div>
+                        <div class="sub" style="color:#808080">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn" style="background:#F15A24">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:#D95D26">Warm Sunset</h3>
+            <div class="phone warm-sunset">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#D95D26">Nerra</div>
+                        <div class="sub" style="color:#A1A1A1">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn" style="background:#D95D26">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:#5D5FEF">Cosmic Purple</h3>
+            <div class="phone cosmic-purple">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#5D5FEF">Nerra</div>
+                        <div class="sub" style="color:#4C1D95">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn" style="background:#5D5FEF">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3 style="color:#1DB954">Toxic Forest</h3>
+            <div class="phone toxic-forest">
+                <div class="header"><div class="notch"></div></div>
+                <div class="screen">
+                    <div class="content">
+                        <div class="logo" style="color:#1DB954">Nerra</div>
+                        <div class="sub" style="color:#A7F3D0">Welcome back</div>
+                        <input class="input" placeholder="Email">
+                        <input class="input" placeholder="Password" type="password">
+                        <button class="btn" style="background:#1DB954">Sign In</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
