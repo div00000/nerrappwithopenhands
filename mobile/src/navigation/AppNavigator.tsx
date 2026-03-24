@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useAuth } from '../contexts/AuthContext';
-import { Colors } from '../constants/theme';
+import { useTheme } from '../contexts/ThemeContext';
 
 // Auth Screens
 import LoginScreen from '../screens/auth/LoginScreen';
@@ -40,13 +40,21 @@ import ProfileScreen from '../screens/profile/ProfileScreen';
 
 // Settings Screens
 import SettingsScreen from '../screens/settings/SettingsScreen';
+import ThemeSettingsScreen from '../screens/settings/ThemeSettingsScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function AuthStack() {
+  const { theme } = useTheme();
+  
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+      screenOptions={{ 
+        headerShown: false,
+        contentStyle: { backgroundColor: theme.background },
+      }}
+    >
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="PhoneVerification" component={PhoneVerificationScreen} />
@@ -56,16 +64,21 @@ function AuthStack() {
 }
 
 function MainTabs() {
+  const { theme } = useTheme();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.text.light,
+        tabBarActiveTintColor: theme.accent,
+        tabBarInactiveTintColor: theme.textMuted,
         tabBarStyle: {
           paddingBottom: 5,
           paddingTop: 5,
           height: 60,
+          backgroundColor: theme.surface,
+          borderTopColor: theme.border,
+          borderTopWidth: 1,
         },
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: keyof typeof Ionicons.glyphMap;
@@ -111,23 +124,21 @@ function MainTabs() {
   );
 }
 
-function OnboardingStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
-    </Stack.Navigator>
-  );
-}
-
 export function AppNavigator() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { theme } = useTheme();
 
   if (isLoading) {
-    return null; // Or a loading screen
+    return null;
   }
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator 
+      screenOptions={{ 
+        headerShown: false,
+        contentStyle: { backgroundColor: theme.background },
+      }}
+    >
       {!isAuthenticated ? (
         <>
           <Stack.Screen name="Auth" component={AuthStack} />
@@ -148,6 +159,11 @@ export function AppNavigator() {
           <Stack.Screen 
             name="Settings" 
             component={SettingsScreen}
+            options={{ presentation: 'modal' }}
+          />
+          <Stack.Screen 
+            name="ThemeSettings" 
+            component={ThemeSettingsScreen}
             options={{ presentation: 'modal' }}
           />
         </>
