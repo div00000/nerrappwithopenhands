@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerra - Premium Merged Theme</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #0D0D12; min-height: 100vh; padding: 40px 20px; }
+        h1 { color: #F8FAFC; text-align: center; margin-bottom: 8px; font-size: 2.5rem; }
+        .tagline { color: #7C3AED; text-align: center; margin-bottom: 50px; font-size: 1.1rem; }
+        
+        .palette-section { background: #16161D; border-radius: 20px; padding: 30px; margin-bottom: 50px; border: 1px solid #2D2D3A; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .palette-title { color: #F8FAFC; font-size: 1.3rem; margin-bottom: 25px; font-weight: 600; }
+        
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 15px; }
+        .color-item { text-align: center; }
+        .color-swatch { height: 50px; border-radius: 10px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; font-weight: 500; border: 1px solid rgba(255,255,255,0.1); }
+        .color-label { color: #94A3B8; font-size: 11px; }
+        .color-hex { color: #64748B; font-size: 9px; font-family: monospace; }
+        
+        .phone-row { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 50px; }
+        .phone { width: 280px; height: 540px; background: #0D0D12; border-radius: 40px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.5); border: 1px solid #2D2D3A; }
+        .phone-header { height: 28px; background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); display: flex; justify-content: center; align-items: center; }
+        .notch { width: 75px; height: 18px; background: #1A1A1A; border-radius: 9px; }
+        .phone-screen { height: calc(100% - 28px); background: #0D0D12; padding: 25px; overflow: hidden; }
+        
+        .login-logo { font-size: 1.8rem; font-weight: 700; color: #7C3AED; text-align: center; margin-bottom: 4px; }
+        .login-subtitle { color: #94A3B8; text-align: center; font-size: 13px; margin-bottom: 25px; }
+        .input-field { background: #1E1E28; border: 1px solid #2D2D3A; border-radius: 12px; padding: 13px; margin-bottom: 12px; font-size: 13px; color: #F8FAFC; width: 100%; }
+        .input-field::placeholder { color: #64748B; }
+        .btn-primary { background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); color: #fff; border: none; border-radius: 12px; padding: 15px; font-size: 14px; font-weight: 600; width: 100%; }
+        .social-row { display: flex; gap: 10px; margin-top: 20px; }
+        .social-btn { flex: 1; background: #16161D; border: 1px solid #2D2D3A; border-radius: 12px; padding: 11px; text-align: center; font-size: 12px; color: #94A3B8; }
+        .footer-text { color: #64748B; text-align: center; margin-top: 20px; font-size: 12px; }
+        .footer-text span { color: #7C3AED; font-weight: 600; }
+        
+        .home-header { background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); padding: 18px; border-bottom-left-radius: 22px; border-bottom-right-radius: 22px; margin: -25px -25px 0 -25px; }
+        .home-greeting { color: #fff; font-size: 16px; font-weight: 600; }
+        .home-status { color: rgba(255,255,255,0.7); font-size: 11px; margin-top: 2px; }
+        .balance-card { background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); margin: 12px 0; padding: 18px; border-radius: 18px; text-align: center; box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3); }
+        .balance-label { color: rgba(255,255,255,0.8); font-size: 11px; }
+        .balance-amount { color: #fff; font-size: 28px; font-weight: 700; margin: 4px 0; }
+        .balance-insured { color: rgba(255,255,255,0.6); font-size: 10px; }
+        .quick-actions { display: flex; justify-content: space-around; padding: 18px 0; border-bottom: 1px solid #2D2D3A; }
+        .action-item { text-align: center; }
+        .action-icon { width: 44px; height: 44px; background: #16161D; border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 5px; font-size: 16px; border: 1px solid #2D2D3A; }
+        .action-label { color: #94A3B8; font-size: 10px; }
+        .section { padding: 12px 0; }
+        .section-header { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .section-title { color: #F8FAFC; font-size: 14px; font-weight: 600; }
+        .see-all { color: #7C3AED; font-size: 11px; }
+        .tx-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #2D2D3A; }
+        .tx-icon { width: 34px; height: 34px; border-radius: 17px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 12px; }
+        .tx-icon.credit { background: rgba(16,185,129,0.15); color: #10B981; }
+        .tx-icon.debit { background: rgba(239,68,68,0.15); color: #EF4444; }
+        .tx-details { flex: 1; }
+        .tx-desc { color: #F8FAFC; font-size: 13px; font-weight: 500; }
+        .tx-date { color: #64748B; font-size: 10px; margin-top: 2px; }
+        .tx-amount { font-size: 13px; font-weight: 600; }
+        .tx-amount.credit { color: #10B981; }
+        .tx-amount.debit { color: #EF4444; }
+        
+        .cards-header { color: #F8FAFC; font-size: 18px; font-weight: 700; padding: 18px 0 8px; }
+        .virtual-card { margin: 12px 0; background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 100%); border-radius: 18px; padding: 22px; color: #fff; box-shadow: 0 8px 25px rgba(124, 58, 237, 0.3); }
+        .card-type { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+        .card-badge { background: #10B981; padding: 2px 6px; border-radius: 4px; font-size: 9px; display: inline-block; margin-bottom: 12px; }
+        .card-number { font-size: 15px; letter-spacing: 2px; margin-bottom: 16px; font-family: monospace; }
+        .card-info { display: flex; justify-content: space-between; }
+        .card-label { font-size: 9px; color: rgba(255,255,255,0.7); }
+        .card-value { font-size: 12px; font-weight: 500; margin-top: 2px; }
+        .card-actions { display: flex; gap: 15px; margin-top: 16px; font-size: 11px; color: rgba(255,255,255,0.8); }
+        .create-card-btn { background: transparent; border: 1px solid #7C3AED; color: #7C3AED; padding: 13px; border-radius: 12px; width: 100%; font-size: 13px; font-weight: 600; margin-top: 12px; }
+        .card-limit { color: #64748B; text-align: center; font-size: 10px; margin-top: 8px; }
+        
+        .section-title-main { color: #F8FAFC; font-size: 1.5rem; margin-bottom: 30px; font-weight: 600; text-align: center; }
+        
+        .why-section { max-width: 700px; margin: 0 auto; }
+        .comparison { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .comparison-box { background: #16161D; border-radius: 14px; padding: 18px; border: 1px solid #2D2D3A; }
+        .comparison-title { color: #F8FAFC; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+        .pro-item { color: #94A3B8; font-size: 12px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .pro-item::before { content: "✓"; color: #10B981; }
+    </style>
+</head>
+<body>
+    <div style="max-width: 1100px; margin: 0 auto;">
+        <h1>Nerra</h1>
+        <p class="tagline">✨ Premium Merged Theme - Elegant & Readable</p>
+        
+        <!-- Color Palette -->
+        <div class="palette-section">
+            <div class="palette-title">🎨 Unified Color Palette</div>
+            <div class="color-grid">
+                <div class="color-item"><div class="color-swatch" style="background: #0D0D12;">Bg</div><div class="color-label">Background</div><div class="color-hex">#0D0D12</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #16161D;">Surface</div><div class="color-label">Surface</div><div class="color-hex">#16161D</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #1E1E28;">Input</div><div class="color-label">Input BG</div><div class="color-hex">#1E1E28</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #7C3AED;">Primary</div><div class="color-label">Primary</div><div class="color-hex">#7C3AED</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #06B6D4;">Accent</div><div class="color-label">Accent</div><div class="color-hex">#06B6D4</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #F8FAFC; color: #000;">Text</div><div class="color-label">Text</div><div class="color-hex">#F8FAFC</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #94A3B8; color: #000;">Muted</div><div class="color-label">Muted</div><div class="color-hex">#94A3B8</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #2D2D3A;">Border</div><div class="color-label">Border</div><div class="color-hex">#2D2D3A</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #10B981;">Success</div><div class="color-label">Success</div><div class="color-hex">#10B981</div></div>
+                <div class="color-item"><div class="color-swatch" style="background: #EF4444;">Error</div><div class="color-label">Error</div><div class="color-hex">#EF4444</div></div>
+            </div>
+        </div>
+        
+        <!-- Phone Previews -->
+        <div class="section-title-main">📱 App Preview</div>
+        <div class="phone-row">
+            <!-- Login -->
+            <div class="phone">
+                <div class="phone-header"><div class="notch"></div></div>
+                <div class="phone-screen">
+                    <div class="login-logo">Nerra</div>
+                    <div class="login-subtitle">Welcome back</div>
+                    <input type="text" class="input-field" placeholder="Enter your email">
+                    <input type="password" class="input-field" placeholder="Enter your password">
+                    <button class="btn-primary">Sign In</button>
+                    <div style="text-align: center; color: #64748B; margin: 12px 0; font-size: 11px;">or continue with</div>
+                    <div class="social-row"><div class="social-btn">G Google</div><div class="social-btn">🍎 Apple</div></div>
+                    <div class="footer-text">Don't have an account? <span>Sign Up</span></div>
+                </div>
+            </div>
+            <!-- Home -->
+            <div class="phone">
+                <div class="phone-header"><div class="notch"></div></div>
+                <div class="phone-screen">
+                    <div class="home-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div><div class="home-greeting">Hello, User 👋</div><div class="home-status">Account Active</div></div>
+                            <div style="font-size: 18px;">⚙️</div>
+                        </div>
+                    </div>
+                    <div class="balance-card">
+                        <div class="balance-label">Available Balance</div>
+                        <div class="balance-amount">₦125,000</div>
+                        <div class="balance-insured">✓ insured</div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-item"><div class="action-icon">➕</div><div class="action-label">Fund</div></div>
+                        <div class="action-item"><div class="action-icon">⇄</div><div class="action-label">Transfer</div></div>
+                        <div class="action-item"><div class="action-icon">📞</div><div class="action-label">Airtime</div></div>
+                        <div class="action-item"><div class="action-icon">📄</div><div class="action-label">Bills</div></div>
+                    </div>
+                    <div class="section">
+                        <div class="section-header"><div class="section-title">Recent Transactions</div><div class="see-all">See All</div></div>
+                        <div class="tx-item"><div class="tx-icon credit">↓</div><div class="tx-details"><div class="tx-desc">From John Doe</div><div class="tx-date">Today</div></div><div class="tx-amount credit">+₦5,000</div></div>
+                        <div class="tx-item"><div class="tx-icon debit">↑</div><div class="tx-details"><div class="tx-desc">MTN Airtime</div><div class="tx-date">Yesterday</div></div><div class="tx-amount debit">-₦2,000</div></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Cards -->
+            <div class="phone">
+                <div class="phone-header"><div class="notch"></div></div>
+                <div class="phone-screen">
+                    <div class="cards-header">Virtual Cards</div>
+                    <div class="virtual-card">
+                        <div class="card-type">Nerra Virtual</div>
+                        <div class="card-badge">Active</div>
+                        <div class="card-number">•••• •••• •••• 4532</div>
+                        <div class="card-info"><div><div class="card-label">Balance</div><div class="card-value">₦25,000</div></div><div><div class="card-label">Expires</div><div class="card-value">12/26</div></div></div>
+                        <div class="card-actions"><span>⏸ Freeze</span><span>💰 Fund</span></div>
+                    </div>
+                    <button class="create-card-btn">Create New Card</button>
+                    <p class="card-limit">Maximum 3 cards</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Why This Works -->
+        <div class="why-section">
+            <div class="palette-section">
+                <div class="palette-title">✨ Why This Theme Works</div>
+                <div class="comparison">
+                    <div class="comparison-box"><div class="comparison-title">Not Too Shouty</div>
+                        <div class="pro-item">Elegant violet primary</div>
+                        <div class="pro-item">Subtle teal accent</div>
+                        <div class="pro-item">Rich dark background</div>
+                        <div class="pro-item">Refined border colors</div>
+                    </div>
+                    <div class="comparison-box"><div class="comparison-title">Not Too Dull</div>
+                        <div class="pro-item">Gradient accents</div>
+                        <div class="pro-item">Pop of teal color</div>
+                        <div class="pro-item">Card shadows add depth</div>
+                        <div class="pro-item">Vibrant status colors</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
