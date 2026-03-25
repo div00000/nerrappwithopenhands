@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, Alert, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { Colors, Spacing, FontSizes, BorderRadius } from '../../constants/theme';
 import Button from '../../components/common/Button';
 
@@ -7,10 +7,12 @@ export default function SignupScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!email || !password || !confirmPassword) {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -20,16 +22,17 @@ export default function SignupScreen({ navigation }: any) {
       return;
     }
 
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters');
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
       return;
     }
 
     setLoading(true);
     try {
-      // For demo purposes, simulate signup
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigation.navigate('PhoneVerification', { email, password });
+      // Demo signup - store user data
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Go directly to Create PIN (skip phone verification)
+      navigation.navigate('CreatePin', { email, firstName, lastName });
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Signup failed');
     } finally {
@@ -37,12 +40,32 @@ export default function SignupScreen({ navigation }: any) {
     }
   };
 
-  const handleGoogleSignup = () => {
-    Alert.alert('Google Signup', 'Google OAuth coming soon');
+  const handleGoogleSignup = async () => {
+    setLoading(true);
+    try {
+      // Simulate Google OAuth
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      Alert.alert('Success', 'Signed in with Google!');
+      navigation.navigate('CreatePin', { email: 'user@gmail.com', firstName: 'Google', lastName: 'User' });
+    } catch (error) {
+      Alert.alert('Error', 'Google sign-in failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAppleSignup = () => {
-    Alert.alert('Apple Signup', 'Apple OAuth coming soon');
+  const handleAppleSignup = async () => {
+    setLoading(true);
+    try {
+      // Simulate Apple OAuth
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      Alert.alert('Success', 'Signed in with Apple!');
+      navigation.navigate('CreatePin', { email: 'user@icloud.com', firstName: 'Apple', lastName: 'User' });
+    } catch (error) {
+      Alert.alert('Error', 'Apple sign-in failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,13 +81,38 @@ export default function SignupScreen({ navigation }: any) {
           </View>
 
           <View style={styles.form}>
+            <View style={styles.nameRow}>
+              <View style={[styles.inputContainer, styles.halfWidth]}>
+                <Text style={styles.label}>First Name</Text>
+                <TextInput
+                  style={styles.input}
+                  value={firstName}
+                  onChangeText={setFirstName}
+                  placeholder="John"
+                  autoCapitalize="words"
+                  autoComplete="name-given"
+                />
+              </View>
+              <View style={[styles.inputContainer, styles.halfWidth]}>
+                <Text style={styles.label}>Last Name</Text>
+                <TextInput
+                  style={styles.input}
+                  value={lastName}
+                  onChangeText={setLastName}
+                  placeholder="Doe"
+                  autoCapitalize="words"
+                  autoComplete="name-family"
+                />
+              </View>
+            </View>
+
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>Email Address</Text>
               <TextInput
                 style={styles.input}
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Enter your email"
+                placeholder="john@example.com"
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoComplete="email"
@@ -77,7 +125,7 @@ export default function SignupScreen({ navigation }: any) {
                 style={styles.input}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Create a password"
+                placeholder="Create a strong password"
                 secureTextEntry
                 autoCapitalize="none"
               />
@@ -96,7 +144,7 @@ export default function SignupScreen({ navigation }: any) {
             </View>
 
             <Button
-              title="Continue"
+              title="Create Account"
               onPress={handleSignup}
               loading={loading}
               size="large"
@@ -112,12 +160,16 @@ export default function SignupScreen({ navigation }: any) {
 
           <View style={styles.socialButtons}>
             <TouchableOpacity style={styles.socialButton} onPress={handleGoogleSignup}>
-              <Text style={styles.socialIcon}>G</Text>
+              <View style={styles.googleIcon}>
+                <Text style={styles.socialIconText}>G</Text>
+              </View>
               <Text style={styles.socialText}>Google</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.socialButton} onPress={handleAppleSignup}>
-              <Text style={styles.socialIcon}>🍎</Text>
+              <View style={styles.appleIcon}>
+                <Text style={styles.appleIconText}></Text>
+              </View>
               <Text style={styles.socialText}>Apple</Text>
             </TouchableOpacity>
           </View>
@@ -146,12 +198,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: Spacing.lg,
     paddingTop: Spacing.xxl,
+    paddingBottom: Spacing.xxl,
   },
   header: {
     marginBottom: Spacing.xl,
+    alignItems: 'center',
   },
   title: {
-    fontSize: FontSizes.xxl,
+    fontSize: FontSizes.xxl + 4,
     fontWeight: '700',
     color: Colors.text.primary,
     marginBottom: Spacing.xs,
@@ -162,6 +216,13 @@ const styles = StyleSheet.create({
   },
   form: {
     marginBottom: Spacing.lg,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    gap: Spacing.md,
+  },
+  halfWidth: {
+    flex: 1,
   },
   inputContainer: {
     marginBottom: Spacing.md,
@@ -213,16 +274,39 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.border,
     borderRadius: BorderRadius.lg,
-    paddingVertical: Spacing.md,
+    paddingVertical: Spacing.md + 2,
     paddingHorizontal: Spacing.xl,
     gap: Spacing.sm,
+    minWidth: 140,
+    justifyContent: 'center',
   },
-  socialIcon: {
-    fontSize: FontSizes.lg,
+  googleIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  socialIconText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#4285F4',
+  },
+  appleIcon: {
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  appleIconText: {
+    fontSize: 20,
+    color: Colors.text.primary,
   },
   socialText: {
     fontSize: FontSizes.md,
     color: Colors.text.primary,
+    fontWeight: '500',
   },
   footer: {
     flexDirection: 'row',

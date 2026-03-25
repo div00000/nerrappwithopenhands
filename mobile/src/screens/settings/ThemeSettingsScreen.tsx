@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme, ThemeName, themes } from '../contexts/ThemeContext';
+import { useTheme, ThemeName, themes } from '../../contexts/ThemeContext';
 
 const themeOptions: { name: ThemeName; label: string; emoji: string; description: string }[] = [
   { name: 'cyberTech', label: 'Cyber Tech', emoji: '🤖', description: 'Deep purple & violet' },
