@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Colors, Spacing, FontSizes, BorderRadius } from '../../constants/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
+import { useTheme } from '../../contexts/ThemeContext';
 import Button from '../../components/common/Button';
-import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginScreen({ navigation }: any) {
+  const { theme } = useTheme();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -19,11 +19,28 @@ export default function LoginScreen({ navigation }: any) {
 
     setLoading(true);
     try {
-      // For demo purposes, simulate login
-      // In production, call API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const mockToken = 'demo_token_' + Date.now();
-      await login(mockToken);
+      // Simulate login
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const demoUser = {
+        id: '1',
+        publicUserId: 'NERRA-' + Date.now(),
+        email: email,
+        firstName: email.split('@')[0],
+        lastName: 'User',
+        kycTier: 0,
+        status: 'active',
+      };
+      
+      const demoToken = 'demo_token_' + Date.now();
+      await SecureStore.setItemAsync('auth_token', demoToken);
+      await AsyncStorage.setItem('user_data', JSON.stringify(demoUser));
+      
+      // Navigate to main app
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Login failed');
     } finally {
@@ -31,36 +48,86 @@ export default function LoginScreen({ navigation }: any) {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // In production, implement Google OAuth
-    Alert.alert('Google Login', 'Google OAuth coming soon');
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      // Simulate Google OAuth
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const demoUser = {
+        id: '1',
+        publicUserId: 'NERRA-GOOGLE',
+        email: 'user@gmail.com',
+        firstName: 'Google',
+        lastName: 'User',
+        kycTier: 0,
+        status: 'active',
+      };
+      
+      const demoToken = 'demo_token_' + Date.now();
+      await SecureStore.setItemAsync('auth_token', demoToken);
+      await AsyncStorage.setItem('user_data', JSON.stringify(demoUser));
+      
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Google sign-in failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleAppleLogin = () => {
-    // In production, implement Apple OAuth
-    Alert.alert('Apple Login', 'Apple OAuth coming soon');
+  const handleAppleLogin = async () => {
+    setLoading(true);
+    try {
+      // Simulate Apple OAuth
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      const demoUser = {
+        id: '1',
+        publicUserId: 'NERRA-APPLE',
+        email: 'user@icloud.com',
+        firstName: 'Apple',
+        lastName: 'User',
+        kycTier: 0,
+        status: 'active',
+      };
+      
+      const demoToken = 'demo_token_' + Date.now();
+      await SecureStore.setItemAsync('auth_token', demoToken);
+      await AsyncStorage.setItem('user_data', JSON.stringify(demoUser));
+      
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
+    } catch (error) {
+      Alert.alert('Error', 'Apple sign-in failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.keyboardView}
-      >
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.header}>
-            <Text style={styles.logo}>Nerra</Text>
-            <Text style={styles.subtitle}>Welcome back</Text>
+            <Text style={[styles.logo, { color: theme.primary }]}>Nerra</Text>
+            <Text style={[styles.subtitle, { color: theme.textMuted }]}>Welcome back</Text>
           </View>
 
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={[styles.label, { color: theme.text }]}>Email</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
                 value={email}
                 onChangeText={setEmail}
                 placeholder="Enter your email"
+                placeholderTextColor={theme.textMuted}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 autoComplete="email"
@@ -68,19 +135,20 @@ export default function LoginScreen({ navigation }: any) {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
+              <Text style={[styles.label, { color: theme.text }]}>Password</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.surface, borderColor: theme.border, color: theme.text }]}
                 value={password}
                 onChangeText={setPassword}
                 placeholder="Enter your password"
+                placeholderTextColor={theme.textMuted}
                 secureTextEntry
                 autoCapitalize="none"
               />
             </View>
 
-            <TouchableOpacity style={styles.forgotPassword}>
-              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            <TouchableOpacity>
+              <Text style={[styles.forgotPasswordText, { color: theme.accent }]}>Forgot Password?</Text>
             </TouchableOpacity>
 
             <Button
@@ -93,27 +161,39 @@ export default function LoginScreen({ navigation }: any) {
           </View>
 
           <View style={styles.divider}>
-            <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>or continue with</Text>
-            <View style={styles.dividerLine} />
+            <View style={[styles.dividerLine, { backgroundColor: theme.border }]} />
+            <Text style={[styles.dividerText, { color: theme.textMuted }]}>or continue with</Text>
+            <View style={[styles.dividerLine, { backgroundColor: theme.border }]} />
           </View>
 
           <View style={styles.socialButtons}>
-            <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin}>
-              <Text style={styles.socialIcon}>G</Text>
-              <Text style={styles.socialText}>Google</Text>
+            <TouchableOpacity 
+              style={[styles.socialButton, { backgroundColor: theme.surface, borderColor: theme.border }]} 
+              onPress={handleGoogleLogin}
+              disabled={loading}
+            >
+              <View style={styles.googleIcon}>
+                <Text style={styles.socialIconText}>G</Text>
+              </View>
+              <Text style={[styles.socialText, { color: theme.text }]}>Google</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin}>
-              <Text style={styles.socialIcon}>🍎</Text>
-              <Text style={styles.socialText}>Apple</Text>
+            <TouchableOpacity 
+              style={[styles.socialButton, { backgroundColor: theme.surface, borderColor: theme.border }]} 
+              onPress={handleAppleLogin}
+              disabled={loading}
+            >
+              <View style={styles.appleIcon}>
+                <Text style={styles.appleIconText}></Text>
+              </View>
+              <Text style={[styles.socialText, { color: theme.text }]}>Apple</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>Don't have an account? </Text>
+            <Text style={[styles.footerText, { color: theme.textMuted }]}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-              <Text style={styles.signUpText}>Sign Up</Text>
+              <Text style={[styles.signUpText, { color: theme.accent }]}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -123,116 +203,31 @@ export default function LoginScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.background,
-  },
-  keyboardView: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    paddingHorizontal: Spacing.lg,
-    paddingTop: Spacing.xxl,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: Spacing.xxl,
-  },
-  logo: {
-    fontSize: FontSizes.xxxl,
-    fontWeight: '700',
-    color: Colors.primary,
-    marginBottom: Spacing.sm,
-  },
-  subtitle: {
-    fontSize: FontSizes.lg,
-    color: Colors.text.secondary,
-  },
-  form: {
-    marginBottom: Spacing.lg,
-  },
-  inputContainer: {
-    marginBottom: Spacing.md,
-  },
-  label: {
-    fontSize: FontSizes.sm,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: Spacing.xs,
-  },
-  input: {
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: BorderRadius.lg,
-    paddingHorizontal: Spacing.md,
-    paddingVertical: Spacing.md,
-    fontSize: FontSizes.md,
-    color: Colors.text.primary,
-  },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginBottom: Spacing.lg,
-  },
-  forgotPasswordText: {
-    color: Colors.primary,
-    fontSize: FontSizes.sm,
-  },
-  loginButton: {
-    marginTop: Spacing.sm,
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: Spacing.lg,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: Colors.border,
-  },
-  dividerText: {
-    color: Colors.text.light,
-    fontSize: FontSizes.sm,
-    marginHorizontal: Spacing.md,
-  },
-  socialButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: Spacing.md,
-    marginBottom: Spacing.xl,
-  },
-  socialButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.surface,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    borderRadius: BorderRadius.lg,
-    paddingVertical: Spacing.md,
-    paddingHorizontal: Spacing.xl,
-    gap: Spacing.sm,
-  },
-  socialIcon: {
-    fontSize: FontSizes.lg,
-  },
-  socialText: {
-    fontSize: FontSizes.md,
-    color: Colors.text.primary,
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: Spacing.xl,
-  },
-  footerText: {
-    color: Colors.text.secondary,
-    fontSize: FontSizes.md,
-  },
-  signUpText: {
-    color: Colors.primary,
-    fontSize: FontSizes.md,
-    fontWeight: '600',
-  },
+  container: { flex: 1 },
+  keyboardView: { flex: 1 },
+  scrollContent: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 48 },
+  header: { alignItems: 'center', marginBottom: 40 },
+  logo: { fontSize: 36, fontWeight: '700', marginBottom: 8 },
+  subtitle: { fontSize: 18 },
+  form: { marginBottom: 24 },
+  inputContainer: { marginBottom: 16 },
+  label: { fontSize: 14, fontWeight: '600', marginBottom: 8 },
+  input: { borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 16 },
+  forgotPassword: { alignSelf: 'flex-end', marginBottom: 20 },
+  forgotPasswordText: { fontSize: 14 },
+  loginButton: { marginTop: 10 },
+  divider: { flexDirection: 'row', alignItems: 'center', marginVertical: 24 },
+  dividerLine: { flex: 1, height: 1 },
+  dividerText: { marginHorizontal: 16, fontSize: 14 },
+  socialButtons: { flexDirection: 'row', justifyContent: 'center', gap: 16, marginBottom: 32 },
+  socialButton: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 12, paddingVertical: 14, paddingHorizontal: 24, gap: 8, minWidth: 130, justifyContent: 'center' },
+  googleIcon: { width: 24, height: 24, borderRadius: 12, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' },
+  socialIconText: { fontSize: 16, fontWeight: '700', color: '#4285F4' },
+  appleIcon: { width: 24, height: 24, alignItems: 'center', justifyContent: 'center' },
+  appleIconText: { fontSize: 20 },
+  socialIcon: { fontSize: 18 },
+  socialText: { fontSize: 16 },
+  footer: { flexDirection: 'row', justifyContent: 'center', marginBottom: 32 },
+  footerText: { fontSize: 16 },
+  signUpText: { fontSize: 16, fontWeight: '600' },
 });

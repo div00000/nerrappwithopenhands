@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, SafeAreaView, Alert, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { Colors, Spacing, FontSizes, BorderRadius } from '../../constants/theme';
 import Button from '../../components/common/Button';
 
-export default function CreatePinScreen({ navigation }: any) {
+export default function CreatePinScreen({ navigation, route }: any) {
+  const { email, firstName, lastName } = route.params || {};
   const [pin, setPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [step, setStep] = useState<'create' | 'confirm'>('create');
@@ -32,13 +35,34 @@ export default function CreatePinScreen({ navigation }: any) {
 
     setLoading(true);
     try {
-      // Save PIN
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      // Navigate to home
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Main' }],
-      });
+      // Store user data locally (demo mode - in real app, this would be from backend)
+      const demoUser = {
+        id: '1',
+        publicUserId: 'NERRA-' + Date.now(),
+        email: email || 'user@nerra.app',
+        firstName: firstName || 'User',
+        lastName: lastName || 'Name',
+        kycTier: 0,
+        status: 'active',
+      };
+      
+      // Store a demo token
+      const demoToken = 'demo_token_' + Date.now();
+      await SecureStore.setItemAsync('auth_token', demoToken);
+      await AsyncStorage.setItem('user_data', JSON.stringify(demoUser));
+      
+      // Show success and navigate
+      Alert.alert('Success', 'Account created successfully!', [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Main' }],
+            });
+          }
+        }
+      ]);
     } catch (error: any) {
       Alert.alert('Error', error.message || 'Failed to set PIN');
     } finally {

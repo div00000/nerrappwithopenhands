@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api } from '../services/api';
 
 interface User {
   id: string;
@@ -18,7 +17,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (token: string) => Promise<void>;
+  login: (token: string, userData?: User) => Promise<void>;
   logout: () => Promise<void>;
   updateUser: (user: User) => void;
 }
@@ -37,9 +36,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const token = await SecureStore.getItemAsync('auth_token');
       if (token) {
-        await api.setToken(token);
-        const userData = await api.getUser();
-        setUser(userData);
+        // Check for stored user data
+        const userDataStr = await AsyncStorage.getItem('user_data');
+        if (userDataStr) {
+          const userData = JSON.parse(userDataStr);
+          setUser(userData);
+        } else if (token.startsWith('demo_token_')) {
+          // Demo mode - create default user
+          setUser({
+            id: '1',
+            publicUserId: 'NERRA-DEMO',
+            email: 'user@nerra.app',
+            firstName: 'Demo',
+            lastName: 'User',
+            kycTier: 0,
+            status: 'active',
+          });
+        }
       }
     } catch (error) {
       console.log('Auth check failed:', error);
@@ -48,19 +61,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const login = async (token: string) => {
-    await api.setToken(token);
-    const userData = await api.getUser();
-    setUser(userData);
+  const login = async (token: string, userData?: User) => {
+    if (userData) {
+      setUser(userData);
+      await AsyncStorage.setItem('user_data', JSON.stringify(userData));
+    } else if (token.startsWith('demo_token_')) {
+      // Demo mode user
+      const demoUser: User = {
+        id: '1',
+        publicUserId: 'NERRA-DEMO-' + Date.now(),
+        email: 'user@nerra.app',
+        firstName: 'User',
+        lastName: 'Name',
+        kycTier: 0,
+        status: 'active',
+      };
+      setUser(demoUser);
+      await AsyncStorage.setItem('user_data', JSON.stringify(demoUser));
+    }
   };
 
   const logout = async () => {
-    await api.clearToken();
+    await SecureStore.deleteItemAsync('auth_token');
+    await AsyncStorage.removeItem('user_data');
     setUser(null);
   };
 
   const updateUser = (userData: User) => {
     setUser(userData);
+    AsyncStorage.setItem('user_data', JSON.stringify(userData));
   };
 
   return (
